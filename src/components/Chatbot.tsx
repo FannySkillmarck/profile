@@ -73,7 +73,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({
       callDirect: "Call Phone",
       fillForm: "Fill Contact Form",
       copied: "Copied to clipboard",
-      errorMsg: "Sorry, I encountered an issue reaching the AI service. You can contact Fang directly at fang.stalmarck@gmail.com or +4676-1848301.",
+      errorMsg: "Sorry, I encountered an issue reaching the AI service. You can contact Fang directly at fang.stalmarck@gmail.com or +46 76 18 48 301.",
     },
     sv: {
       title: "Fangs AI-Karriärassistent",
@@ -96,7 +96,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({
       callDirect: "Ring Fang",
       fillForm: "Fyll i kontaktformulär",
       copied: "Kopierat till urklipp",
-      errorMsg: "Tyvärr uppstod ett fel vid anslutning till AI-tjänsten. Kontakta Fang direkt via fang.stalmarck@gmail.com eller +4676-1848301.",
+      errorMsg: "Tyvärr uppstod ett fel vid anslutning till AI-tjänsten. Kontakta Fang direkt via fang.stalmarck@gmail.com eller +46 76 18 48 301.",
     },
     zh: {
       title: "方立马克 (Fang) 的 AI 招聘助手",
@@ -119,7 +119,7 @@ export const Chatbot: React.FC<ChatbotProps> = ({
       callDirect: "致电联系",
       fillForm: "填写留言板",
       copied: "已复制到剪贴板",
-      errorMsg: "抱歉，连接 AI 助手时出现网络波动。欢迎直接发送邮件至 fang.stalmarck@gmail.com 或拨打 +4676-1848301 与 Fang 联系！",
+      errorMsg: "抱歉，连接 AI 助手时出现网络波动。欢迎直接发送邮件至 fang.stalmarck@gmail.com 或拨打 +46 76 18 48 301 与 Fang 联系！",
     },
   }[lang];
 

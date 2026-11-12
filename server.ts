@@ -14,7 +14,7 @@ const FANG_SYSTEM_INSTRUCTION = `You are the official AI Career & Recruitment As
 - Full Name: Fang Stålmarck
 - Current Role: Senior DevOps & Full Stack Developer | Generative AI & Cloud Specialist
 - Location: Sandhamnsgatan 13, 115 40 Stockholm, Sweden
-- Phone: +4676-1848301
+- Phone: +46 76 18 48 301
 - Email: fang.stalmarck@gmail.com
 - GitHub: https://github.com/fang-stalmarck
 - LinkedIn: https://linkedin.com/in/fang-stalmarck
@@ -45,7 +45,7 @@ Fang is known by colleagues as an energetic, cheerful, and positive team player 
 - Language: Respond in the language used by the user (English, Swedish/Svenska, or Chinese/中文).
 - Tone: Professional, warm, helpful, knowledgeable, and concise.
 - Focus: Highlight her technical depth, proven Swedish public and private sector track record, and how to reach her.
-- Contact: Proactively encourage employers to contact Fang directly via email (fang.stalmarck@gmail.com) or phone (+4676-1848301), or to use the on-page message form.`;
+- Contact: Proactively encourage employers to contact Fang directly via email (fang.stalmarck@gmail.com) or phone (+46 76 18 48 301), or to use the on-page message form.`;
 
 let aiClient: GoogleGenAI | null = null;
 
@@ -81,7 +81,7 @@ app.post('/api/chat', async (req, res) => {
     if (!ai) {
       // Fallback response if GEMINI_API_KEY is not configured
       const fallbackReply =
-        `Hello! I am Fang Stålmarck's AI Career Assistant. Fang is a Senior DevOps & Full Stack Developer with 15+ years of experience across Tietoevry, UHR, Försvarsmakten, H&M, and SEB, holding an M.Sc. from KTH and a 2026 NVIDIA Generative AI certification.\n\nYou can contact her directly via email: fang.stalmarck@gmail.com or telephone: +4676-1848301. How can I help you regarding her background or projects?`;
+        `Hello! I am Fang Stålmarck's AI Career Assistant. Fang is a Senior DevOps & Full Stack Developer with 15+ years of experience across Tietoevry, UHR, Försvarsmakten, H&M, and SEB, holding an M.Sc. from KTH and a 2026 NVIDIA Generative AI certification.\n\nYou can contact her directly via email: fang.stalmarck@gmail.com or telephone: +46 76 18 48 301. How can I help you regarding her background or projects?`;
 
       res.json({
         reply: fallbackReply,
@@ -134,7 +134,7 @@ app.post('/api/chat', async (req, res) => {
 
     // If all models encountered issues, return informative candidate dossier reply
     const fallbackDossier =
-      `Fang Stålmarck is a Senior DevOps & Full Stack Developer based in Stockholm (+4676-1848301, fang.stalmarck@gmail.com).\n\nKey Highlights:\n- 15+ years experience: Tietoevry (Azure/Cloud), UHR (EPiServer), Försvarsmakten (SharePoint), H&M, SEB.\n- Education: M.Sc. in Software Development from KTH Royal Institute of Technology.\n- Certifications: 2026 NVIDIA Generative AI LLMs, 2024 Azure DevOps Engineer.\n- Availability: Open to full-time or consulting roles in Stockholm (hybrid/remote).\n\nPlease contact Fang directly or leave a message on the contact board!`;
+      `Fang Stålmarck is a Senior DevOps & Full Stack Developer based in Stockholm (+46 76 18 48 301, fang.stalmarck@gmail.com).\n\nKey Highlights:\n- 15+ years experience: Tietoevry (Azure/Cloud), UHR (EPiServer), Försvarsmakten (SharePoint), H&M, SEB.\n- Education: M.Sc. in Software Development from KTH Royal Institute of Technology.\n- Certifications: 2026 NVIDIA Generative AI LLMs, 2024 Azure DevOps Engineer.\n- Availability: Open to full-time or consulting roles in Stockholm (hybrid/remote).\n\nPlease contact Fang directly or leave a message on the contact board!`;
 
     res.json({
       reply: fallbackDossier,
@@ -145,7 +145,7 @@ app.post('/api/chat', async (req, res) => {
     console.error('Error handling /api/chat:', error);
     res.status(500).json({
       error: error?.message || 'Failed to generate response',
-      reply: 'Fang Stålmarck is a Senior DevOps & Full Stack Developer based in Stockholm (+4676-1848301, fang.stalmarck@gmail.com). Please reach out to her directly or leave a note on the message board!',
+      reply: 'Fang Stålmarck is a Senior DevOps & Full Stack Developer based in Stockholm (+46 76 18 48 301, fang.stalmarck@gmail.com). Please reach out to her directly or leave a note on the message board!',
     });
   }
 });

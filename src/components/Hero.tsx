@@ -123,12 +123,13 @@ export const Hero: React.FC<HeroProps> = ({
           {/* Left Column: Typographic Hierarchy */}
           <div className="lg:col-span-7 flex flex-col justify-between">
             <div>
-              {/* Unboxed Kicker */}
-              <div className="flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-slate-500 dark:text-slate-400 mb-4">
-                <span>{t.kicker}</span>
-                <span aria-hidden="true">·</span>
-                <span className="text-slate-800 dark:text-slate-200 font-medium">
-                  {getJobStatus()}
+              {/* Kicker & Candidate Status on the same line */}
+              <div className="flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-slate-500 dark:text-slate-400 mb-4 flex-nowrap whitespace-nowrap overflow-x-auto no-scrollbar py-0.5">
+                <span className="shrink-0">{t.kicker}</span>
+                <span aria-hidden="true" className="shrink-0 text-slate-300 dark:text-slate-700">·</span>
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-300/80 dark:border-emerald-700/60 font-semibold whitespace-nowrap shrink-0">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+                  <span className="whitespace-nowrap">{getJobStatus()}</span>
                 </span>
               </div>
 

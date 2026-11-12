@@ -132,25 +132,30 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Zone 3: 3-Language Button & Controls */}
         <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-          {/* Trilingual Switcher (English, Swedish, Chinese) */}
+          {/* Trilingual Switcher (English, Swedish, Chinese) - Highlighted in Green */}
           <div className="relative">
             <button
               type="button"
               onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors border border-slate-200/60 dark:border-slate-700/60"
-              title="Change Language (English / Svenska / 中文)"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 dark:bg-emerald-600 dark:hover:bg-emerald-500 rounded-lg transition-all border border-emerald-500 shadow-sm ring-2 ring-emerald-400/30 active:scale-95 cursor-pointer"
+              title="Change Language / Byt språk / 切换语言 (EN / SV / 中文)"
               aria-label="Change language"
             >
-              <Globe className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
-              <span className="uppercase font-mono">{lang}</span>
-              <span className="text-[10px] text-slate-400">▼</span>
+              <Globe className="w-3.5 h-3.5 text-emerald-100" />
+              <span className="uppercase font-mono tracking-wider font-bold">
+                {lang === 'en' ? '🇬🇧 EN' : lang === 'sv' ? '🇸🇪 SV' : '🇨🇳 中文'}
+              </span>
+              <span className="text-[10px] text-emerald-100">▼</span>
             </button>
 
             {langDropdownOpen && (
               <div
-                className="absolute right-0 mt-1.5 w-36 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl py-1 z-50 animate-in fade-in duration-100"
+                className="absolute right-0 mt-1.5 w-40 rounded-xl bg-white dark:bg-slate-900 border-2 border-emerald-500/50 dark:border-emerald-500/50 shadow-xl py-1 z-50 animate-in fade-in duration-100 ring-1 ring-emerald-500/20"
                 role="menu"
               >
+                <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 border-b border-emerald-100 dark:border-slate-800">
+                  Select Language
+                </div>
                 {languages.map((item) => (
                   <button
                     key={item.code}
@@ -159,17 +164,17 @@ export const Header: React.FC<HeaderProps> = ({
                       onChangeLang(item.code);
                       setLangDropdownOpen(false);
                     }}
-                    className={`w-full flex items-center justify-between px-3 py-2 text-xs font-medium text-left transition-colors ${
+                    className={`w-full flex items-center justify-between px-3 py-2 text-xs font-medium text-left transition-colors cursor-pointer ${
                       lang === item.code
-                        ? 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white font-bold'
-                        : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60'
+                        ? 'bg-emerald-50 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 font-bold'
+                        : 'text-slate-600 dark:text-slate-300 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/30 hover:text-emerald-700 dark:hover:text-emerald-300'
                     }`}
                   >
                     <span className="flex items-center gap-2">
-                      <span>{item.flag}</span>
+                      <span className="text-base">{item.flag}</span>
                       <span>{item.label}</span>
                     </span>
-                    {lang === item.code && <span className="text-emerald-500 font-bold">✓</span>}
+                    {lang === item.code && <span className="text-emerald-600 font-bold">✓</span>}
                   </button>
                 ))}
               </div>
@@ -256,19 +261,22 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
         <div className="md:hidden border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-4 space-y-3">
-          {/* Mobile Language Switcher */}
-          <div className="flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
-            <span className="text-xs text-slate-500">Language:</span>
-            <div className="flex items-center gap-1">
+          {/* Mobile Language Switcher - Highlighted in Green */}
+          <div className="flex items-center justify-between pb-3 border-b border-emerald-100 dark:border-slate-800">
+            <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
+              <Globe className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Language / Språk:</span>
+            </span>
+            <div className="flex items-center gap-1.5">
               {languages.map((item) => (
                 <button
                   key={item.code}
                   type="button"
                   onClick={() => onChangeLang(item.code)}
-                  className={`px-2.5 py-1 text-xs rounded-md font-medium ${
+                  className={`px-3 py-1.5 text-xs rounded-lg font-bold transition-all ${
                     lang === item.code
-                      ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-bold'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                      ? 'bg-emerald-600 text-white shadow-sm ring-2 ring-emerald-500/30'
+                      : 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/80 hover:bg-emerald-100'
                   }`}
                 >
                   {item.flag} {item.code.toUpperCase()}

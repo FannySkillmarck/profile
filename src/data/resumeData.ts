@@ -15,7 +15,7 @@ export const initialProfile: CandidateProfile = {
   svBio: 'Fang är en energisk kollega som sprider glädje i teamet. Fullstackutvecklare och DevOps-ingenjör med inriktning mot Microsoftsystemutvecklingsmiljöer, Azure Cloud och moderna webbramverk. Masterexamen från KTH (Kungliga Tekniska högskolan) samt NVIDIA-certifiering inom Generativ AI (2026). Omfattande erfarenhet från Tietoevry, UHR, Försvarsmakten, H&M, SEB, Sveaskog och Veni AS.',
   avatarUrl: '/src/assets/images/fang_stalmarck_real.png',
   email: 'fang.stalmarck@gmail.com',
-  phone: '+4676-1848301',
+  phone: '+46 76 18 48 301',
   wechat: 'fang_stalmarck',
   github: 'https://github.com/fang-stalmarck',
   linkedin: 'https://linkedin.com/in/fang-stalmarck',

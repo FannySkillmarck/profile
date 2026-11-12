@@ -40,8 +40,16 @@ export default function App() {
   // Candidate Profile State with localStorage persistence
   const [profile, setProfile] = useState<CandidateProfile>(() => {
     try {
-      const saved = localStorage.getItem('candidate_profile_v3');
+      const saved = localStorage.getItem('candidate_profile_v4');
       if (saved) return JSON.parse(saved);
+      // Migration: check older stored profile and normalize phone format
+      const savedV3 = localStorage.getItem('candidate_profile_v3');
+      if (savedV3) {
+        const parsed = JSON.parse(savedV3);
+        parsed.phone = '+46 76 18 48 301';
+        localStorage.setItem('candidate_profile_v4', JSON.stringify(parsed));
+        return parsed;
+      }
     } catch (e) {
       console.error('Error loading saved profile', e);
     }
@@ -142,12 +150,13 @@ export default function App() {
   // Profile Save & Reset Handlers
   const handleSaveProfile = (updated: CandidateProfile) => {
     setProfile(updated);
-    localStorage.setItem('candidate_profile_v3', JSON.stringify(updated));
+    localStorage.setItem('candidate_profile_v4', JSON.stringify(updated));
     triggerToast(lang === 'sv' ? 'Profilen har uppdaterats' : lang === 'zh' ? '个人资料已更新' : 'Profile updated successfully');
   };
 
   const handleResetProfile = () => {
     setProfile(initialProfile);
+    localStorage.removeItem('candidate_profile_v4');
     localStorage.removeItem('candidate_profile_v3');
     triggerToast(lang === 'sv' ? 'Återställt till standardprofil' : lang === 'zh' ? '已重置为标准档案' : 'Profile reset to default credentials');
   };

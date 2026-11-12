@@ -281,7 +281,7 @@ FN:Fang Stålmarck
 TITLE:Senior DevOps & Full Stack Developer
 ADR;TYPE=HOME:;;Sandhamnsgatan 13;Stockholm;;115 40;Sweden
 EMAIL;TYPE=INTERNET,WORK:fang.stalmarck@gmail.com
-TEL;TYPE=CELL:+46761848301
+TEL;TYPE=CELL:+46 76 18 48 301
 URL:https://github.com/fang-stalmarck
 NOTE:M.Sc. KTH Royal Institute of Technology | NVIDIA-Certified Generative AI LLMs
 END:VCARD`;
@@ -351,11 +351,12 @@ END:VCARD`;
         <div className="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs mb-10">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div>
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
-                <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <span>{t.candidateStatusLabel}</span>
-                <span className="font-normal text-slate-600 dark:text-slate-300">
-                  {getJobStatus()}
+              <div className="flex items-center gap-2 text-xs font-semibold text-slate-800 dark:text-slate-200 mb-1.5 flex-nowrap whitespace-nowrap overflow-x-auto no-scrollbar">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                <span className="shrink-0">{t.candidateStatusLabel}</span>
+                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 font-medium whitespace-nowrap shrink-0">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+                  <span className="whitespace-nowrap">{getJobStatus()}</span>
                 </span>
               </div>
               <div className="text-xs text-slate-500 dark:text-slate-400 flex flex-wrap items-center gap-x-3 gap-y-1">
