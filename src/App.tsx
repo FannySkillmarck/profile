@@ -40,14 +40,19 @@ export default function App() {
   // Candidate Profile State with localStorage persistence
   const [profile, setProfile] = useState<CandidateProfile>(() => {
     try {
-      const saved = localStorage.getItem('candidate_profile_v4');
+      const saved = localStorage.getItem('candidate_profile_v6');
       if (saved) return JSON.parse(saved);
-      // Migration: check older stored profile and normalize phone format
-      const savedV3 = localStorage.getItem('candidate_profile_v3');
-      if (savedV3) {
-        const parsed = JSON.parse(savedV3);
+      // Migration: check older stored profile and normalize linkedin, github and phone
+      const savedOld =
+        localStorage.getItem('candidate_profile_v5') ||
+        localStorage.getItem('candidate_profile_v4') ||
+        localStorage.getItem('candidate_profile_v3');
+      if (savedOld) {
+        const parsed = JSON.parse(savedOld);
+        parsed.linkedin = 'https://www.linkedin.com/in/fang-stalmarck-8aa754346/';
+        parsed.github = 'https://github.com/FannySkillmarck/';
         parsed.phone = '+46 76 18 48 301';
-        localStorage.setItem('candidate_profile_v4', JSON.stringify(parsed));
+        localStorage.setItem('candidate_profile_v6', JSON.stringify(parsed));
         return parsed;
       }
     } catch (e) {
@@ -150,12 +155,14 @@ export default function App() {
   // Profile Save & Reset Handlers
   const handleSaveProfile = (updated: CandidateProfile) => {
     setProfile(updated);
-    localStorage.setItem('candidate_profile_v4', JSON.stringify(updated));
+    localStorage.setItem('candidate_profile_v6', JSON.stringify(updated));
     triggerToast(lang === 'sv' ? 'Profilen har uppdaterats' : lang === 'zh' ? '个人资料已更新' : 'Profile updated successfully');
   };
 
   const handleResetProfile = () => {
     setProfile(initialProfile);
+    localStorage.removeItem('candidate_profile_v6');
+    localStorage.removeItem('candidate_profile_v5');
     localStorage.removeItem('candidate_profile_v4');
     localStorage.removeItem('candidate_profile_v3');
     triggerToast(lang === 'sv' ? 'Återställt till standardprofil' : lang === 'zh' ? '已重置为标准档案' : 'Profile reset to default credentials');
@@ -186,7 +193,6 @@ export default function App() {
         isDark={isDark}
         onToggleDark={() => setIsDark((prev) => !prev)}
         onOpenPrint={() => setIsPrintModalOpen(true)}
-        onOpenEdit={() => setIsProfileEditOpen(true)}
         onScrollToMessage={scrollToContact}
         onOpenChat={() => setIsChatOpen(true)}
       />

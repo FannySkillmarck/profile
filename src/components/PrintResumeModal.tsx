@@ -110,6 +110,7 @@ export const PrintResumeModal: React.FC<PrintResumeModalProps> = ({
               <div>{profile.phone}</div>
               <div>{location}</div>
               <div className="text-[11px] text-slate-500">{profile.github}</div>
+              <div className="text-[11px] text-slate-500">{profile.linkedin}</div>
             </div>
           </div>
 

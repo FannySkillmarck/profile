@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CandidateProfile, Language } from '../types/resume';
-import { Moon, Sun, Printer, Edit3, MessageSquarePlus, Menu, X, FileDown, Globe, Bot } from 'lucide-react';
+import { Moon, Sun, Printer, MessageSquarePlus, Menu, X, FileDown, Globe, Bot } from 'lucide-react';
 
 interface HeaderProps {
   profile: CandidateProfile;
@@ -9,7 +9,6 @@ interface HeaderProps {
   isDark: boolean;
   onToggleDark: () => void;
   onOpenPrint: () => void;
-  onOpenEdit: () => void;
   onScrollToMessage: () => void;
   onOpenChat: () => void;
 }
@@ -21,7 +20,6 @@ export const Header: React.FC<HeaderProps> = ({
   isDark,
   onToggleDark,
   onOpenPrint,
-  onOpenEdit,
   onScrollToMessage,
   onOpenChat,
 }) => {
@@ -180,17 +178,6 @@ export const Header: React.FC<HeaderProps> = ({
               </div>
             )}
           </div>
-
-          {/* Edit profile modal trigger */}
-          <button
-            type="button"
-            onClick={onOpenEdit}
-            title="Edit Candidate Information"
-            className="p-2 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-            aria-label="Edit Profile"
-          >
-            <Edit3 className="w-4 h-4" />
-          </button>
 
           {/* Dark / Light Mode Toggle */}
           <button

@@ -17,8 +17,8 @@ export const initialProfile: CandidateProfile = {
   email: 'fang.stalmarck@gmail.com',
   phone: '+46 76 18 48 301',
   wechat: 'fang_stalmarck',
-  github: 'https://github.com/fang-stalmarck',
-  linkedin: 'https://linkedin.com/in/fang-stalmarck',
+  github: 'https://github.com/FannySkillmarck/',
+  linkedin: 'https://www.linkedin.com/in/fang-stalmarck-8aa754346/',
   location: 'Sandhamnsgatan 13, 115 40 Stockholm, Sweden',
   enLocation: 'Sandhamnsgatan 13, 115 40 Stockholm, Sweden',
   svLocation: 'Sandhamnsgatan 13, 115 40 Stockholm, Sverige',
@@ -442,7 +442,7 @@ export const initialProjects: ProjectItem[] = [
     svArchitecture: 'Frontend i React med GIS-kartlager; backend med .NET C#-mikrotjänster, Azure SQL-databas och Azure DevOps automatisering.',
     techStack: ['React', 'C#', '.NET', 'SQL', 'GIS Map', 'Azure Cloud', 'DevOps'],
     demoUrl: 'https://www.sveaskog.se',
-    githubUrl: 'https://github.com/fang-stalmarck/sveaskog-gis-logistics'
+    githubUrl: 'https://github.com/FannySkillmarck/sveaskog-gis-logistics'
   },
   {
     id: 'proj-2',
@@ -508,7 +508,7 @@ export const initialProjects: ProjectItem[] = [
     svArchitecture: 'EPiServer CMS på .NET C#, anpassade Epiforms-moduler, SQL Server och högpresterande lastbalansering.',
     techStack: ['EPiServer CMS', 'C#', '.NET', 'JavaScript', 'SQL Server', 'HTML5/CSS3'],
     demoUrl: 'https://www.uhr.se',
-    githubUrl: 'https://github.com/fang-stalmarck/uhr-episerver-platform'
+    githubUrl: 'https://github.com/FannySkillmarck/uhr-episerver-platform'
   },
   {
     id: 'proj-3',
@@ -574,7 +574,7 @@ export const initialProjects: ProjectItem[] = [
     svArchitecture: 'Mikrotjänster i .NET C# och Azure Cloud, React administrationsgränssnitt och mobilappar med SQL-databas.',
     techStack: ['.NET C#', 'React', 'REST API', 'iOS', 'Android', 'SQL', 'Azure Cloud'],
     demoUrl: 'https://www.veni.no',
-    githubUrl: 'https://github.com/fang-stalmarck/veni-life-at-work'
+    githubUrl: 'https://github.com/FannySkillmarck/veni-life-at-work'
   }
 ];
 

@@ -16,8 +16,8 @@ const FANG_SYSTEM_INSTRUCTION = `You are the official AI Career & Recruitment As
 - Location: Sandhamnsgatan 13, 115 40 Stockholm, Sweden
 - Phone: +46 76 18 48 301
 - Email: fang.stalmarck@gmail.com
-- GitHub: https://github.com/fang-stalmarck
-- LinkedIn: https://linkedin.com/in/fang-stalmarck
+- GitHub: https://github.com/FannySkillmarck/
+- LinkedIn: https://www.linkedin.com/in/fang-stalmarck-8aa754346/
 - Availability: Actively open to new opportunities (Full-time, Senior/Lead roles, or consulting). Available in Stockholm on-site, hybrid, or remote within 2 weeks.
 - Spoken Languages: Swedish (Svenska - fluent/professional), English (fluent/full working), Chinese (中文 - native), Norwegian (working proficiency), French (basic).
 

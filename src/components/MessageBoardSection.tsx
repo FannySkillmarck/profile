@@ -282,7 +282,7 @@ TITLE:Senior DevOps & Full Stack Developer
 ADR;TYPE=HOME:;;Sandhamnsgatan 13;Stockholm;;115 40;Sweden
 EMAIL;TYPE=INTERNET,WORK:fang.stalmarck@gmail.com
 TEL;TYPE=CELL:+46 76 18 48 301
-URL:https://github.com/fang-stalmarck
+URL:https://github.com/FannySkillmarck/
 NOTE:M.Sc. KTH Royal Institute of Technology | NVIDIA-Certified Generative AI LLMs
 END:VCARD`;
 
