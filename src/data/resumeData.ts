@@ -1,4 +1,8 @@
 import { CandidateProfile, WorkExperience, ProjectItem, SkillCategory, RecruiterMessage } from '../types/resume';
+import fangAvatarImg from '../assets/images/fang_stalmarck_real.png';
+import projSveaskogImg from '../assets/images/project_cloud_observability_1793953473387.jpg';
+import projUhrImg from '../assets/images/project_ai_agent_platform_1793953472508.jpg';
+import projVeniImg from '../assets/images/project_fintech_system_1793953473346.jpg';
 
 export const initialProfile: CandidateProfile = {
   name: 'Fang Stålmarck',
@@ -13,7 +17,7 @@ export const initialProfile: CandidateProfile = {
   bio: 'Based in Stockholm, Sweden, holding an M.Sc. in Software Development from KTH Royal Institute of Technology. Extensive experience delivering high-impact systems for prominent Swedish institutions: Tietoevry, Swedish Council for Higher Education (UHR), Swedish Armed Forces (Försvarsmakten), H&M, SEB, Sveaskog, and Veni AS. Energic team player fluent in Swedish, English, and Chinese.',
   enBio: 'Based in Stockholm, Sweden, holding an M.Sc. in Software Development from KTH Royal Institute of Technology. Extensive experience delivering high-impact systems for prominent Swedish institutions: Tietoevry, Swedish Council for Higher Education (UHR), Swedish Armed Forces (Försvarsmakten), H&M, SEB, Sveaskog, and Veni AS. Energic team player fluent in Swedish, English, and Chinese.',
   svBio: 'Fang är en energisk kollega som sprider glädje i teamet. Fullstackutvecklare och DevOps-ingenjör med inriktning mot Microsoftsystemutvecklingsmiljöer, Azure Cloud och moderna webbramverk. Masterexamen från KTH (Kungliga Tekniska högskolan) samt NVIDIA-certifiering inom Generativ AI (2026). Omfattande erfarenhet från Tietoevry, UHR, Försvarsmakten, H&M, SEB, Sveaskog och Veni AS.',
-  avatarUrl: '/src/assets/images/fang_stalmarck_real.png',
+  avatarUrl: fangAvatarImg,
   email: 'fang.stalmarck@gmail.com',
   phone: '+46 76 18 48 301',
   wechat: 'fang_stalmarck',
@@ -394,7 +398,7 @@ export const initialProjects: ProjectItem[] = [
     summary: 'Comprehensive logistics and map services platform engineered for Sveaskog (Sweden\'s largest forest owner), integrating interactive geospatial GIS mapping with real-time supply chain logistics on Microsoft Azure Cloud.',
     enSummary: 'Comprehensive logistics and map services platform engineered for Sveaskog (Sweden\'s largest forest owner), integrating interactive geospatial GIS mapping with real-time supply chain logistics on Microsoft Azure Cloud.',
     svSummary: 'Produktutveckling för kartaservice och logistikservice åt Sveaskog (Sveriges största skogsägare). Integrerat GIS-kartsystem med realtidslogistik på Microsoft Azure Cloud.',
-    image: '/src/assets/images/project_cloud_observability_1793953473387.jpg',
+    image: projSveaskogImg,
     metrics: [
       'Nationwide forestry coverage across Sweden',
       'Real-time GIS geospatial route calculations',
@@ -460,7 +464,7 @@ export const initialProjects: ProjectItem[] = [
     summary: 'Developing, maintaining, and upgrading www.uhr.se and www.utbyten.se. A network of 12 integrated websites serving all Swedish universities, students, and educational authorities.',
     enSummary: 'Developing, maintaining, and upgrading www.uhr.se and www.utbyten.se. A network of 12 integrated websites serving all Swedish universities, students, and educational authorities.',
     svSummary: 'Utveckling och förvaltning av www.uhr.se och www.utbyten.se. Nätverk av 12 sammankopplade webbplatser för 12 produktägare till stöd för alla Sveriges universitet och studenter.',
-    image: '/src/assets/images/project_ai_agent_platform_1793953472508.jpg',
+    image: projUhrImg,
     metrics: [
       '12 integrated portals for 12 product owners',
       'Zero downtime during peak national admission cycles',
@@ -526,7 +530,7 @@ export const initialProjects: ProjectItem[] = [
     summary: 'Next-generation smart office workplace management platform spanning .NET C# cloud APIs, modern React administrative dashboards, and native iOS and Android mobile applications for office occupants.',
     enSummary: 'Next-generation smart office workplace management platform spanning .NET C# cloud APIs, modern React administrative dashboards, and native iOS and Android mobile applications for office occupants.',
     svSummary: 'Modernt smart-office-system med .NET C# moln-API:er, React administrationsgränssnitt och appar för iOS och Android (mötesbokning, matmeny, serviceärenden).',
-    image: '/src/assets/images/project_fintech_system_1793953473346.jpg',
+    image: projVeniImg,
     metrics: [
       'Web, iOS & Android unified synchronization',
       'Sub-200ms REST API response times',

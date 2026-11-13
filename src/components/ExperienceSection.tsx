@@ -47,19 +47,26 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   }[lang];
 
   return (
-    <section id="experience" className="py-16 border-b border-slate-200/80 dark:border-slate-800/80">
+    <section
+      id="experience"
+      aria-labelledby="experience-heading"
+      className="py-16 border-b border-slate-200/80 dark:border-slate-800/80"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Heading: Level 2 Heading */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-12">
           <div>
-            <div className="text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
+            <div className="text-xs font-mono uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-2">
               {t.kicker}
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+            <h2
+              id="experience-heading"
+              className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white"
+            >
               {t.heading}
             </h2>
           </div>
-          <p className="text-sm text-slate-600 dark:text-slate-400 max-w-md">
+          <p className="text-sm text-slate-700 dark:text-slate-300 max-w-md">
             {t.subtitle}
           </p>
         </div>
@@ -74,7 +81,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
             const achievements = lang === 'sv' ? exp.svAchievements : lang === 'zh' ? exp.achievements : exp.enAchievements;
 
             return (
-              <div
+              <article
                 key={exp.id}
                 className="p-6 sm:p-8 rounded-2xl bg-white dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800/80 hover:border-slate-300 dark:hover:border-slate-700 transition-colors"
               >
@@ -82,7 +89,9 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-800/70">
                   <div>
                     <div className="flex items-center gap-3">
-                      <span className="text-xs font-mono text-slate-400">0{index + 1}.</span>
+                      <span aria-hidden="true" className="text-xs font-mono text-slate-600 dark:text-slate-300">
+                        0{index + 1}.
+                      </span>
                       {/* Level 3 Heading: Role */}
                       <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
                         {role}
@@ -90,56 +99,58 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                     </div>
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm font-medium text-slate-700 dark:text-slate-300 mt-1">
                       <span className="flex items-center gap-1.5 text-slate-900 dark:text-white font-semibold">
-                        <Building2 className="w-4 h-4 text-slate-400" />
+                        <Building2 className="w-4 h-4 text-slate-600 dark:text-slate-300" aria-hidden="true" />
                         {company}
                       </span>
-                      <span aria-hidden="true" className="text-slate-300 dark:text-slate-700">·</span>
-                      <span className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
-                        <MapPin className="w-3.5 h-3.5" />
+                      <span aria-hidden="true" className="text-slate-400 dark:text-slate-600">·</span>
+                      <span className="flex items-center gap-1 text-xs text-slate-600 dark:text-slate-300">
+                        <MapPin className="w-3.5 h-3.5" aria-hidden="true" />
                         {location}
                       </span>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 text-xs font-mono text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/80 px-3 py-1.5 rounded-md border border-slate-200/60 dark:border-slate-700/60 w-fit shrink-0">
-                    <Calendar className="w-3.5 h-3.5" />
+                  <div className="flex items-center gap-2 text-xs font-mono text-slate-700 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/80 px-3 py-1.5 rounded-md border border-slate-200/60 dark:border-slate-700/60 w-fit shrink-0">
+                    <Calendar className="w-3.5 h-3.5" aria-hidden="true" />
                     <span>{exp.period}</span>
                   </div>
                 </div>
 
                 {/* Role Summary */}
-                <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed my-4">
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed my-4">
                   {summary}
                 </p>
 
                 {/* Key Achievements */}
                 <div className="space-y-2.5 my-5">
-                  <div className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                  <div className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300">
                     {t.achievementsLabel}
                   </div>
-                  {achievements.map((ach, i) => (
-                    <div key={i} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
-                      <span className="text-slate-400 dark:text-slate-500 mt-1 font-mono">▸</span>
-                      <span>{ach}</span>
-                    </div>
-                  ))}
+                  <ul className="space-y-2 list-none p-0 m-0">
+                    {achievements.map((ach, i) => (
+                      <li key={i} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                        <span aria-hidden="true" className="text-slate-600 dark:text-slate-300 mt-0.5 font-mono">▸</span>
+                        <span>{ach}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
                 {/* Clean Tech Stack */}
-                <div className="pt-4 border-t border-slate-100 dark:border-slate-800/70 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-500 dark:text-slate-400">
-                  <span className="font-semibold text-slate-700 dark:text-slate-300 mr-1">
+                <div className="pt-4 border-t border-slate-100 dark:border-slate-800/70 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-slate-600 dark:text-slate-300">
+                  <span className="font-semibold text-slate-800 dark:text-slate-200 mr-1">
                     {t.techStackLabel}
                   </span>
                   {exp.techStack.map((tech, i) => (
                     <React.Fragment key={tech}>
-                      <span className="font-mono text-slate-700 dark:text-slate-300">{tech}</span>
+                      <span className="font-mono text-slate-800 dark:text-slate-200">{tech}</span>
                       {i < exp.techStack.length - 1 && (
-                        <span aria-hidden="true" className="text-slate-300 dark:text-slate-700">·</span>
+                        <span aria-hidden="true" className="text-slate-400 dark:text-slate-600">·</span>
                       )}
                     </React.Fragment>
                   ))}
                 </div>
-              </div>
+              </article>
             );
           })}
         </div>
@@ -147,7 +158,7 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
         {/* Education Subsection */}
         <div className="mt-14 pt-10 border-t border-slate-200/80 dark:border-slate-800/80">
           <div className="mb-6">
-            <div className="text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+            <div className="text-xs font-mono uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1">
               {t.eduKicker}
             </div>
             {/* Level 3 Heading: Education Header */}
@@ -170,24 +181,24 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                 >
                   <div className="flex items-start justify-between gap-4 mb-2">
                     <div className="flex items-center gap-2">
-                      <GraduationCap className="w-5 h-5 text-slate-700 dark:text-slate-300 shrink-0" />
+                      <GraduationCap className="w-5 h-5 text-slate-700 dark:text-slate-300 shrink-0" aria-hidden="true" />
                       <div>
                         <h4 className="text-base font-bold text-slate-900 dark:text-white">
                           {institution}
                         </h4>
-                        <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+                        <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">
                           {degree} · {major}
                         </p>
                       </div>
                     </div>
-                    <span className="text-xs font-mono text-slate-500 dark:text-slate-400 tabular-nums">
+                    <span className="text-xs font-mono text-slate-600 dark:text-slate-300 tabular-nums shrink-0">
                       {edu.period}
                     </span>
                   </div>
 
                   {honors && (
-                    <div className="mt-3 pt-3 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center gap-2 text-xs text-slate-600 dark:text-slate-300">
-                      <Award className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                    <div className="mt-3 pt-3 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300">
+                      <Award className="w-4 h-4 text-amber-700 dark:text-amber-400 shrink-0" aria-hidden="true" />
                       <span>{honors}</span>
                     </div>
                   )}

@@ -55,6 +55,7 @@ export const MessageBoardSection: React.FC<MessageBoardSectionProps> = ({
   const [replyingId, setReplyingId] = useState<string | null>(null);
   const [replyContent, setReplyContent] = useState('');
   const [copiedEmail, setCopiedEmail] = useState(false);
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
 
   const t = {
     en: {
@@ -330,19 +331,26 @@ END:VCARD`;
   };
 
   return (
-    <section id="contact" className="py-16 border-b border-slate-200/80 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-950/40">
+    <section
+      id="contact"
+      aria-labelledby="contact-heading"
+      className="py-16 border-b border-slate-200/80 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-950/40"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Level 2 Heading: Section Heading */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
           <div>
-            <div className="text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
+            <div className="text-xs font-mono uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-2">
               {t.kicker}
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+            <h2
+              id="contact-heading"
+              className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white"
+            >
               {t.heading}
             </h2>
           </div>
-          <p className="text-sm text-slate-600 dark:text-slate-400 max-w-md">
+          <p className="text-sm text-slate-700 dark:text-slate-300 max-w-md">
             {t.subtitle}
           </p>
         </div>
@@ -352,19 +360,29 @@ END:VCARD`;
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div>
               <div className="flex items-center gap-2 text-xs font-semibold text-slate-800 dark:text-slate-200 mb-1.5 flex-nowrap whitespace-nowrap overflow-x-auto no-scrollbar">
-                <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                <ShieldCheck className="w-4 h-4 text-emerald-700 dark:text-emerald-400 shrink-0" aria-hidden="true" />
                 <span className="shrink-0">{t.candidateStatusLabel}</span>
-                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 font-medium whitespace-nowrap shrink-0">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800/60 font-medium whitespace-nowrap shrink-0">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-700 dark:bg-emerald-400 animate-pulse shrink-0" aria-hidden="true"></span>
                   <span className="whitespace-nowrap">{getJobStatus()}</span>
                 </span>
               </div>
-              <div className="text-xs text-slate-500 dark:text-slate-400 flex flex-wrap items-center gap-x-3 gap-y-1">
-                <span>{t.addressLabel} <strong className="text-slate-700 dark:text-slate-300">{getLocation()}</strong></span>
-                <span>·</span>
-                <span>{t.phoneLabel} <strong className="font-mono text-slate-700 dark:text-slate-300">{profile.phone}</strong></span>
-                <span>·</span>
-                <span>{t.emailLabel} <strong className="font-mono text-slate-700 dark:text-slate-300">{profile.email}</strong></span>
+              <div className="text-xs text-slate-600 dark:text-slate-300 flex flex-wrap items-center gap-x-3 gap-y-1">
+                <span>{t.addressLabel} <strong className="text-slate-800 dark:text-slate-200">{getLocation()}</strong></span>
+                <span aria-hidden="true">·</span>
+                <span>
+                  {t.phoneLabel}{' '}
+                  <a href={`tel:${profile.phone.replace(/\s+/g, '')}`} className="font-mono font-bold text-slate-800 dark:text-slate-200 hover:underline">
+                    {profile.phone}
+                  </a>
+                </span>
+                <span aria-hidden="true">·</span>
+                <span>
+                  {t.emailLabel}{' '}
+                  <a href={`mailto:${profile.email}`} className="font-mono font-bold text-slate-800 dark:text-slate-200 hover:underline">
+                    {profile.email}
+                  </a>
+                </span>
               </div>
             </div>
 
@@ -377,18 +395,22 @@ END:VCARD`;
                   setCopiedEmail(true);
                   setTimeout(() => setCopiedEmail(false), 2000);
                 }}
-                className="flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                className="flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors"
               >
-                {copiedEmail ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-400" />}
+                {copiedEmail ? (
+                  <Check className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" aria-hidden="true" />
+                ) : (
+                  <Copy className="w-3.5 h-3.5 text-slate-600 dark:text-slate-300" aria-hidden="true" />
+                )}
                 <span>{t.copyEmailBtn}</span>
               </button>
 
               <button
                 type="button"
                 onClick={onShowWechatQr}
-                className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors"
+                className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors"
               >
-                <QrCode className="w-3.5 h-3.5" />
+                <QrCode className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>{t.wechatBtn}</span>
               </button>
 
@@ -397,7 +419,7 @@ END:VCARD`;
                 onClick={handleDownloadVCard}
                 className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-slate-900 rounded-lg hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 transition-colors shadow-xs"
               >
-                <FileText className="w-3.5 h-3.5" />
+                <FileText className="w-3.5 h-3.5" aria-hidden="true" />
                 <span>{t.vCardBtn}</span>
               </button>
             </div>
@@ -409,64 +431,69 @@ END:VCARD`;
           {/* Left Column: Semantic Contact Form containing all required fields */}
           <div className="lg:col-span-6 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-7 shadow-xs">
             <div className="flex items-center gap-2 mb-2">
-              <MessageSquare className="w-4 h-4 text-slate-700 dark:text-slate-300" />
+              <MessageSquare className="w-4 h-4 text-slate-700 dark:text-slate-300" aria-hidden="true" />
               {/* Level 3 Heading: Contact Form */}
               <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
                 {t.formTitle}
               </h3>
             </div>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">
+            <p className="text-xs text-slate-600 dark:text-slate-300 mb-6">
               {t.formSubtitle}
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* 1. Name Input */}
               <div>
-                <label htmlFor="contact-name" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-                  {t.nameLabel} <span className="text-rose-500">*</span>
+                <label htmlFor="contact-name" className="block text-xs font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
+                  {t.nameLabel} <span className="text-rose-700 dark:text-rose-400" aria-hidden="true">*</span>
                 </label>
                 <input
                   type="text"
                   id="contact-name"
                   name="name"
                   required
+                  aria-required="true"
+                  autoComplete="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder={t.namePlaceholder}
-                  className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-hidden focus:ring-1 focus:ring-slate-900 dark:focus:ring-white transition-all"
+                  className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-emerald-700 dark:focus:ring-emerald-400 transition-all"
                 />
               </div>
 
               {/* 2. Email & 4. Phone in 2-column on tablet/desktop */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label htmlFor="contact-email" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-                    {t.emailFieldLabel} <span className="text-rose-500">*</span>
+                  <label htmlFor="contact-email" className="block text-xs font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
+                    {t.emailFieldLabel} <span className="text-rose-700 dark:text-rose-400" aria-hidden="true">*</span>
                   </label>
                   <input
                     type="email"
                     id="contact-email"
                     name="email"
                     required
+                    aria-required="true"
+                    autoComplete="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder={t.emailPlaceholder}
-                    className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-hidden focus:ring-1 focus:ring-slate-900 dark:focus:ring-white transition-all"
+                    className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-emerald-700 dark:focus:ring-emerald-400 transition-all"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="contact-phone" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                  <label htmlFor="contact-phone" className="block text-xs font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
                     {t.phoneFieldLabel}
                   </label>
                   <input
                     type="tel"
                     id="contact-phone"
                     name="phone"
+                    autoComplete="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder={t.phonePlaceholder}
-                    className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-hidden focus:ring-1 focus:ring-slate-900 dark:focus:ring-white transition-all"
+                    className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-emerald-700 dark:focus:ring-emerald-400 transition-all"
                   />
                 </div>
               </div>
@@ -474,47 +501,51 @@ END:VCARD`;
               {/* 3. Website & Organization */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label htmlFor="contact-website" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                  <label htmlFor="contact-website" className="block text-xs font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
                     {t.websiteLabel}
                   </label>
                   <input
                     type="url"
                     id="contact-website"
                     name="website"
+                    autoComplete="url"
                     value={website}
                     onChange={(e) => setWebsite(e.target.value)}
                     placeholder={t.websitePlaceholder}
-                    className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-hidden focus:ring-1 focus:ring-slate-900 dark:focus:ring-white transition-all"
+                    className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-emerald-700 dark:focus:ring-emerald-400 transition-all"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="contact-company" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                  <label htmlFor="contact-company" className="block text-xs font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
                     {t.companyLabel}
                   </label>
                   <input
                     type="text"
                     id="contact-company"
                     name="company"
+                    autoComplete="organization"
                     value={company}
                     onChange={(e) => setCompany(e.target.value)}
                     placeholder={t.companyPlaceholder}
-                    className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-hidden focus:ring-1 focus:ring-slate-900 dark:focus:ring-white transition-all"
+                    className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-emerald-700 dark:focus:ring-emerald-400 transition-all"
                   />
                 </div>
               </div>
 
               {/* 5. Dropdown Menu */}
               <div>
-                <label htmlFor="contact-inquiry-type" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-                  {t.inquiryTypeLabel} <span className="text-rose-500">*</span>
+                <label htmlFor="contact-inquiry-type" className="block text-xs font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
+                  {t.inquiryTypeLabel} <span className="text-rose-700 dark:text-rose-400" aria-hidden="true">*</span>
                 </label>
                 <select
                   id="contact-inquiry-type"
                   name="inquiryType"
+                  required
+                  aria-required="true"
                   value={inquiryType}
                   onChange={(e) => setInquiryType(e.target.value as RecruiterMessage['intent'])}
-                  className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-900 dark:text-white focus:outline-hidden focus:ring-1 focus:ring-slate-900 dark:focus:ring-white transition-all"
+                  className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-900 dark:text-white focus:outline-hidden focus:ring-2 focus:ring-emerald-700 dark:focus:ring-emerald-400 transition-all"
                 >
                   <option value="job_offer">{t.optJob}</option>
                   <option value="interview">{t.optInterview}</option>
@@ -526,7 +557,7 @@ END:VCARD`;
 
               {/* Target Position (Optional field) */}
               <div>
-                <label htmlFor="contact-target-position" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
+                <label htmlFor="contact-target-position" className="block text-xs font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
                   {t.targetPosLabel}
                 </label>
                 <input
@@ -536,24 +567,25 @@ END:VCARD`;
                   value={targetPosition}
                   onChange={(e) => setTargetPosition(e.target.value)}
                   placeholder={t.targetPosPlaceholder}
-                  className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-hidden focus:ring-1 focus:ring-slate-900 dark:focus:ring-white transition-all"
+                  className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-emerald-700 dark:focus:ring-emerald-400 transition-all"
                 />
               </div>
 
               {/* 7. Textarea for Paragraph Text */}
               <div>
-                <label htmlFor="contact-message" className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
-                  {t.messageLabel} <span className="text-rose-500">*</span>
+                <label htmlFor="contact-message" className="block text-xs font-semibold text-slate-800 dark:text-slate-200 mb-1.5">
+                  {t.messageLabel} <span className="text-rose-700 dark:text-rose-400" aria-hidden="true">*</span>
                 </label>
                 <textarea
                   id="contact-message"
                   name="message"
                   required
+                  aria-required="true"
                   rows={4}
                   value={messageText}
                   onChange={(e) => setMessageText(e.target.value)}
                   placeholder={t.messagePlaceholder}
-                  className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-hidden focus:ring-1 focus:ring-slate-900 dark:focus:ring-white transition-all resize-none"
+                  className="w-full px-3 py-2 text-xs sm:text-sm rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800/80 text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:outline-hidden focus:ring-2 focus:ring-emerald-700 dark:focus:ring-emerald-400 transition-all resize-none"
                 />
               </div>
 
@@ -565,9 +597,9 @@ END:VCARD`;
                   name="consent"
                   checked={consentAndUrgent}
                   onChange={(e) => setConsentAndUrgent(e.target.checked)}
-                  className="rounded border-slate-300 text-slate-900 focus:ring-slate-900 w-4 h-4 mt-0.5"
+                  className="rounded border-slate-400 text-emerald-700 focus:ring-emerald-700 w-4 h-4 mt-0.5 shrink-0"
                 />
-                <label htmlFor="contact-consent" className="text-xs text-slate-600 dark:text-slate-300 cursor-pointer select-none">
+                <label htmlFor="contact-consent" className="text-xs text-slate-700 dark:text-slate-300 cursor-pointer select-none">
                   {t.consentLabel}
                 </label>
               </div>
@@ -577,7 +609,7 @@ END:VCARD`;
                 type="submit"
                 className="w-full flex items-center justify-center gap-2 py-2.5 px-4 text-xs sm:text-sm font-semibold text-white bg-slate-900 rounded-lg hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 transition-colors shadow-sm"
               >
-                <Send className="w-4 h-4" />
+                <Send className="w-4 h-4" aria-hidden="true" />
                 <span>{t.sendBtn}</span>
               </button>
             </form>
@@ -591,16 +623,21 @@ END:VCARD`;
                 <h3 className="text-base font-bold text-slate-900 dark:text-white">
                   {t.feedTitle}
                 </h3>
-                <span className="text-xs font-mono text-slate-500 tabular-nums">
+                <span className="text-xs font-mono text-slate-600 dark:text-slate-300 tabular-nums">
                   ({filteredMessages.length})
                 </span>
               </div>
 
               <div className="flex items-center gap-2">
+                <label htmlFor="message-feed-filter" className="sr-only">
+                  {t.feedTitle}
+                </label>
                 <select
+                  id="message-feed-filter"
+                  aria-label={t.feedTitle}
                   value={activeFilter}
                   onChange={(e) => setActiveFilter(e.target.value)}
-                  className="px-2.5 py-1 text-xs rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300"
+                  className="px-2.5 py-1 text-xs rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200"
                 >
                   <option value="all">{t.filterAll}</option>
                   <option value="job_offer">{t.filterJob}</option>
@@ -613,179 +650,207 @@ END:VCARD`;
                   type="button"
                   onClick={handleExportMessages}
                   title={t.exportJson}
-                  className="p-1.5 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white border border-slate-200 dark:border-slate-700 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                  aria-label={t.exportJson}
+                  className="p-1.5 text-slate-700 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white border border-slate-300 dark:border-slate-700 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
                 >
-                  <Download className="w-3.5 h-3.5" />
+                  <Download className="w-3.5 h-3.5" aria-hidden="true" />
                 </button>
               </div>
             </div>
 
             {/* List of Messages */}
-            {filteredMessages.length === 0 ? (
-              <div className="p-8 text-center rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-500 text-sm">
-                {t.noMessages}
-              </div>
-            ) : (
-              filteredMessages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className="p-5 sm:p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs hover:border-slate-300 dark:hover:border-slate-700 transition-colors"
-                >
-                  {/* Top Bar of Message */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100 dark:border-slate-800/80">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <div className="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-1.5">
-                        <User className="w-3.5 h-3.5 text-slate-400" />
-                        <span>{msg.name}</span>
-                      </div>
-                      <span className="text-xs text-slate-500 dark:text-slate-400">·</span>
-                      <span className="text-xs font-medium text-slate-700 dark:text-slate-300 flex items-center gap-1">
-                        <Building className="w-3 h-3 text-slate-400" />
-                        {msg.company} ({msg.role})
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      {msg.isUrgent && (
-                        <span className="flex items-center gap-1 text-[11px] font-mono text-amber-700 dark:text-amber-400 font-semibold bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded">
-                          <Flame className="w-3 h-3" />
-                          <span>{t.priorityTag}</span>
-                        </span>
-                      )}
-                      <span className="text-xs font-mono text-slate-400 tabular-nums">
-                        {msg.timestamp}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Intent & Position Metadata */}
-                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-600 dark:text-slate-400 my-2.5">
-                    <span className="font-semibold text-slate-800 dark:text-slate-200">
-                      [{getIntentLabel(msg.intent)}]
-                    </span>
-                    {msg.targetPosition && (
-                      <>
-                        <span aria-hidden="true" className="text-slate-300 dark:text-slate-700">·</span>
-                        <span>Role: {msg.targetPosition}</span>
-                      </>
-                    )}
-                    {msg.salaryBudget && (
-                      <>
-                        <span aria-hidden="true" className="text-slate-300 dark:text-slate-700">·</span>
-                        <span className="font-mono text-slate-700 dark:text-slate-300">{msg.salaryBudget}</span>
-                      </>
-                    )}
-                  </div>
-
-                  {/* Content Paragraph */}
-                  <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed my-3 bg-slate-50/70 dark:bg-slate-800/40 p-3.5 rounded-lg border border-slate-100 dark:border-slate-800/50">
-                    {msg.content}
-                  </p>
-
-                  {/* Reply Section */}
-                  {msg.reply && (
-                    <div className="mt-3 p-3 rounded-lg bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 flex items-start gap-2.5 text-xs text-slate-800 dark:text-slate-200">
-                      <CornerDownRight className="w-4 h-4 text-slate-500 mt-0.5 shrink-0" />
-                      <div>
-                        <div className="font-semibold text-slate-900 dark:text-white mb-0.5">
-                          {profile.name} {lang === 'sv' ? 'Svar:' : lang === 'zh' ? '回复：' : 'Reply:'}
+            <div aria-live="polite" className="space-y-4">
+              {filteredMessages.length === 0 ? (
+                <div className="p-8 text-center rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 text-sm">
+                  {t.noMessages}
+                </div>
+              ) : (
+                filteredMessages.map((msg) => (
+                  <article
+                    key={msg.id}
+                    className="p-5 sm:p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs hover:border-slate-300 dark:hover:border-slate-700 transition-colors"
+                  >
+                    {/* Top Bar of Message */}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-slate-100 dark:border-slate-800/80">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <div className="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-1.5">
+                          <User className="w-3.5 h-3.5 text-slate-600 dark:text-slate-300" aria-hidden="true" />
+                          <span>{msg.name}</span>
                         </div>
-                        <p>{msg.reply}</p>
+                        <span aria-hidden="true" className="text-xs text-slate-600 dark:text-slate-300">·</span>
+                        <span className="text-xs font-medium text-slate-700 dark:text-slate-300 flex items-center gap-1">
+                          <Building className="w-3 h-3 text-slate-600 dark:text-slate-300" aria-hidden="true" />
+                          {msg.company} ({msg.role})
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        {msg.isUrgent && (
+                          <span className="flex items-center gap-1 text-[11px] font-mono text-amber-800 dark:text-amber-300 font-semibold bg-amber-100 dark:bg-amber-950/50 px-2 py-0.5 rounded">
+                            <Flame className="w-3 h-3" aria-hidden="true" />
+                            <span>{t.priorityTag}</span>
+                          </span>
+                        )}
+                        <span className="text-xs font-mono text-slate-600 dark:text-slate-300 tabular-nums">
+                          {msg.timestamp}
+                        </span>
                       </div>
                     </div>
-                  )}
 
-                  {/* Reply Composer if active */}
-                  {replyingId === msg.id && (
-                    <div className="mt-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
-                      <textarea
-                        rows={2}
-                        value={replyContent}
-                        onChange={(e) => setReplyContent(e.target.value)}
-                        placeholder={t.replyPlaceholder}
-                        className="w-full p-2 text-xs rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white resize-none"
-                      />
-                      <div className="flex items-center justify-end gap-2">
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setReplyingId(null);
-                            setReplyContent('');
-                          }}
-                          className="px-2.5 py-1 text-xs text-slate-600 dark:text-slate-400 hover:text-slate-900"
-                        >
-                          {t.cancelBtn}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            if (replyContent.trim()) {
-                              onReplyMessage(msg.id, replyContent.trim());
-                              setReplyingId(null);
-                              setReplyContent('');
-                              onNotify(lang === 'sv' ? 'Svar publicerat' : lang === 'zh' ? '已发布回复' : 'Reply posted to message feed');
-                            }
-                          }}
-                          className="px-3 py-1 text-xs font-medium text-white bg-slate-900 dark:bg-white dark:text-slate-900 rounded hover:opacity-90"
-                        >
-                          {t.postReplyBtn}
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Actions Footer */}
-                  <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-500">
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => handleCopyText(msg.email, 'Sender Email')}
-                        className="flex items-center gap-1 hover:text-slate-900 dark:hover:text-white transition-colors"
-                        title={msg.email}
-                      >
-                        <Mail className="w-3 h-3 text-slate-400" />
-                        <span className="font-mono">{msg.email}</span>
-                      </button>
-                      {msg.phoneOrWechat && (
+                    {/* Intent & Position Metadata */}
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-700 dark:text-slate-300 my-2.5">
+                      <span className="font-semibold text-slate-900 dark:text-slate-100">
+                        [{getIntentLabel(msg.intent)}]
+                      </span>
+                      {msg.targetPosition && (
                         <>
-                          <span>·</span>
-                          <span className="font-mono">{msg.phoneOrWechat}</span>
+                          <span aria-hidden="true" className="text-slate-400 dark:text-slate-600">·</span>
+                          <span>Role: {msg.targetPosition}</span>
+                        </>
+                      )}
+                      {msg.salaryBudget && (
+                        <>
+                          <span aria-hidden="true" className="text-slate-400 dark:text-slate-600">·</span>
+                          <span className="font-mono text-slate-800 dark:text-slate-200">{msg.salaryBudget}</span>
                         </>
                       )}
                     </div>
 
-                    <div className="flex items-center gap-2">
-                      {!msg.reply && replyingId !== msg.id && (
+                    {/* Content Paragraph */}
+                    <p className="text-xs sm:text-sm text-slate-800 dark:text-slate-200 leading-relaxed my-3 bg-slate-50/70 dark:bg-slate-800/40 p-3.5 rounded-lg border border-slate-200/60 dark:border-slate-800/50">
+                      {msg.content}
+                    </p>
+
+                    {/* Reply Section */}
+                    {msg.reply && (
+                      <div className="mt-3 p-3 rounded-lg bg-slate-100/80 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 flex items-start gap-2.5 text-xs text-slate-800 dark:text-slate-200">
+                        <CornerDownRight className="w-4 h-4 text-slate-600 dark:text-slate-300 mt-0.5 shrink-0" aria-hidden="true" />
+                        <div>
+                          <div className="font-semibold text-slate-900 dark:text-white mb-0.5">
+                            {profile.name} {lang === 'sv' ? 'Svar:' : lang === 'zh' ? '回复：' : 'Reply:'}
+                          </div>
+                          <p>{msg.reply}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Reply Composer if active */}
+                    {replyingId === msg.id && (
+                      <div className="mt-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2">
+                        <label htmlFor={`reply-input-${msg.id}`} className="sr-only">
+                          {t.replyPlaceholder}
+                        </label>
+                        <textarea
+                          id={`reply-input-${msg.id}`}
+                          rows={2}
+                          value={replyContent}
+                          onChange={(e) => setReplyContent(e.target.value)}
+                          placeholder={t.replyPlaceholder}
+                          aria-label={t.replyPlaceholder}
+                          className="w-full p-2 text-xs rounded border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400 resize-none"
+                        />
+                        <div className="flex items-center justify-end gap-2">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setReplyingId(null);
+                              setReplyContent('');
+                            }}
+                            className="px-2.5 py-1 text-xs text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+                          >
+                            {t.cancelBtn}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (replyContent.trim()) {
+                                onReplyMessage(msg.id, replyContent.trim());
+                                setReplyingId(null);
+                                setReplyContent('');
+                                onNotify(lang === 'sv' ? 'Svar publicerat' : lang === 'zh' ? '已发布回复' : 'Reply posted to message feed');
+                              }
+                            }}
+                            className="px-3 py-1 text-xs font-medium text-white bg-slate-900 dark:bg-white dark:text-slate-900 rounded hover:opacity-90"
+                          >
+                            {t.postReplyBtn}
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Actions Footer */}
+                    <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-600 dark:text-slate-300">
+                      <div className="flex items-center gap-2 min-w-0">
                         <button
                           type="button"
-                          onClick={() => {
-                            setReplyingId(msg.id);
-                            setReplyContent('');
-                          }}
-                          className="text-xs text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-medium"
+                          onClick={() => handleCopyText(msg.email, 'Sender Email')}
+                          className="flex items-center gap-1 hover:text-slate-900 dark:hover:text-white transition-colors truncate"
+                          aria-label={`${t.copyEmailBtn}: ${msg.email}`}
+                          title={msg.email}
                         >
-                          {t.replyBtn}
+                          <Mail className="w-3 h-3 text-slate-600 dark:text-slate-300 shrink-0" aria-hidden="true" />
+                          <span className="font-mono truncate">{msg.email}</span>
                         </button>
-                      )}
+                        {msg.phoneOrWechat && (
+                          <>
+                            <span aria-hidden="true">·</span>
+                            <span className="font-mono shrink-0">{msg.phoneOrWechat}</span>
+                          </>
+                        )}
+                      </div>
 
-                      <button
-                        type="button"
-                        onClick={() => {
-                          if (confirm(lang === 'sv' ? 'Radera detta meddelande?' : lang === 'zh' ? '确定要删除此留言吗？' : 'Delete this message?')) {
-                            onDeleteMessage(msg.id);
-                            onNotify(lang === 'sv' ? 'Meddelande raderat' : lang === 'zh' ? '留言已删除' : 'Message deleted');
-                          }
-                        }}
-                        className="p-1 text-slate-400 hover:text-rose-600 transition-colors"
-                        title={t.deleteBtn}
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
+                      <div className="flex items-center gap-2 shrink-0">
+                        {!msg.reply && replyingId !== msg.id && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setReplyingId(msg.id);
+                              setReplyContent('');
+                            }}
+                            className="text-xs text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-medium"
+                          >
+                            {t.replyBtn}
+                          </button>
+                        )}
+
+                        {confirmDeleteId === msg.id ? (
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                onDeleteMessage(msg.id);
+                                setConfirmDeleteId(null);
+                                onNotify(lang === 'sv' ? 'Meddelande raderat' : lang === 'zh' ? '留言已删除' : 'Message deleted');
+                              }}
+                              className="px-2 py-0.5 text-[11px] font-semibold bg-rose-700 text-white rounded hover:bg-rose-800 transition-colors"
+                            >
+                              {t.deleteBtn}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setConfirmDeleteId(null)}
+                              className="px-2 py-0.5 text-[11px] font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                            >
+                              {t.cancelBtn}
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => setConfirmDeleteId(msg.id)}
+                            className="p-1 text-slate-600 dark:text-slate-300 hover:text-rose-700 dark:hover:text-rose-400 transition-colors"
+                            title={t.deleteBtn}
+                            aria-label={`${t.deleteBtn}: ${msg.name}`}
+                          >
+                            <Trash2 className="w-3.5 h-3.5" aria-hidden="true" />
+                          </button>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))
-            )}
+                  </article>
+                ))
+              )}
+            </div>
           </div>
         </div>
       </div>

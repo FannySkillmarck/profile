@@ -40,19 +40,21 @@ export default function App() {
   // Candidate Profile State with localStorage persistence
   const [profile, setProfile] = useState<CandidateProfile>(() => {
     try {
-      const saved = localStorage.getItem('candidate_profile_v6');
+      const saved = localStorage.getItem('candidate_profile_v7');
       if (saved) return JSON.parse(saved);
-      // Migration: check older stored profile and normalize linkedin, github and phone
+      // Migration: check older stored profile and normalize avatar, linkedin, github, and phone
       const savedOld =
+        localStorage.getItem('candidate_profile_v6') ||
         localStorage.getItem('candidate_profile_v5') ||
         localStorage.getItem('candidate_profile_v4') ||
         localStorage.getItem('candidate_profile_v3');
       if (savedOld) {
         const parsed = JSON.parse(savedOld);
+        parsed.avatarUrl = initialProfile.avatarUrl;
         parsed.linkedin = 'https://www.linkedin.com/in/fang-stalmarck-8aa754346/';
         parsed.github = 'https://github.com/FannySkillmarck/';
         parsed.phone = '+46 76 18 48 301';
-        localStorage.setItem('candidate_profile_v6', JSON.stringify(parsed));
+        localStorage.setItem('candidate_profile_v7', JSON.stringify(parsed));
         return parsed;
       }
     } catch (e) {
@@ -90,6 +92,11 @@ export default function App() {
       localStorage.setItem('resume_theme', 'light');
     }
   }, [isDark]);
+
+  // Sync active language to <html lang="...">
+  useEffect(() => {
+    document.documentElement.lang = lang;
+  }, [lang]);
 
   // Persist Language Choice
   const handleLanguageChange = (newLang: Language) => {
@@ -155,12 +162,13 @@ export default function App() {
   // Profile Save & Reset Handlers
   const handleSaveProfile = (updated: CandidateProfile) => {
     setProfile(updated);
-    localStorage.setItem('candidate_profile_v6', JSON.stringify(updated));
+    localStorage.setItem('candidate_profile_v7', JSON.stringify(updated));
     triggerToast(lang === 'sv' ? 'Profilen har uppdaterats' : lang === 'zh' ? '个人资料已更新' : 'Profile updated successfully');
   };
 
   const handleResetProfile = () => {
     setProfile(initialProfile);
+    localStorage.removeItem('candidate_profile_v7');
     localStorage.removeItem('candidate_profile_v6');
     localStorage.removeItem('candidate_profile_v5');
     localStorage.removeItem('candidate_profile_v4');
@@ -183,8 +191,23 @@ export default function App() {
     }
   };
 
+  const skipLabel =
+    lang === 'sv'
+      ? 'Hoppa till huvudinnehåll'
+      : lang === 'zh'
+      ? '跳转到正文内容'
+      : 'Skip to main content';
+
   return (
     <div id="top" className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
+      {/* Accessible Skip Link for Keyboard & Screen Reader Users */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:bg-emerald-700 focus:text-white focus:rounded-lg focus:text-sm focus:font-semibold focus:shadow-lg"
+      >
+        {skipLabel}
+      </a>
+
       {/* Semantic Header with Navigation Menu & Trilingual Switcher */}
       <Header
         profile={profile}
@@ -212,7 +235,7 @@ export default function App() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full flex-grow">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
           {/* Semantic Main Section (Huvudsektion) */}
-          <main id="main-content" className="lg:col-span-8 space-y-16">
+          <main id="main-content" tabIndex={-1} className="lg:col-span-8 space-y-16 outline-none">
             {/* 1. Three Featured Projects (Tre Projekt) */}
             <ProjectsSection
               projects={initialProjects}
@@ -255,7 +278,7 @@ export default function App() {
       </div>
 
       {/* Semantic Footer (Sidfot) with Contact Details */}
-      <Footer profile={profile} />
+      <Footer profile={profile} lang={lang} />
 
       {/* Project Deep-Dive Modal */}
       <ProjectModal

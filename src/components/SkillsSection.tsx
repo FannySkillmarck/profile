@@ -49,45 +49,61 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({ skills, lang }) =>
   const getCategoryIcon = (idx: number) => {
     switch (idx) {
       case 0:
-        return <Layers className="w-4 h-4 text-slate-700 dark:text-slate-300" />;
+        return <Layers className="w-4 h-4 text-slate-700 dark:text-slate-300" aria-hidden="true" />;
       case 1:
-        return <Cpu className="w-4 h-4 text-slate-700 dark:text-slate-300" />;
+        return <Cpu className="w-4 h-4 text-slate-700 dark:text-slate-300" aria-hidden="true" />;
       default:
-        return <BrainCircuit className="w-4 h-4 text-slate-700 dark:text-slate-300" />;
+        return <BrainCircuit className="w-4 h-4 text-slate-700 dark:text-slate-300" aria-hidden="true" />;
     }
   };
 
   return (
-    <section id="skills" className="py-16 border-b border-slate-200/80 dark:border-slate-800/80">
+    <section
+      id="skills"
+      aria-labelledby="skills-heading"
+      className="py-16 border-b border-slate-200/80 dark:border-slate-800/80"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Heading: Level 2 Heading */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
           <div>
-            <div className="text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
+            <div className="text-xs font-mono uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-2">
               {t.kicker}
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+            <h2
+              id="skills-heading"
+              className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white"
+            >
               {t.heading}
             </h2>
           </div>
-          <p className="text-sm text-slate-600 dark:text-slate-400 max-w-md">
+          <p className="text-sm text-slate-700 dark:text-slate-300 max-w-md">
             {t.subtitle}
           </p>
         </div>
 
         {/* Category Tabs */}
-        <div className="flex flex-wrap items-center gap-1.5 p-1.5 bg-slate-100 dark:bg-slate-900 rounded-xl mb-8 border border-slate-200/60 dark:border-slate-800/60">
+        <div
+          role="tablist"
+          aria-label={t.heading}
+          className="flex flex-wrap items-center gap-1.5 p-1.5 bg-slate-100 dark:bg-slate-900 rounded-xl mb-8 border border-slate-200/60 dark:border-slate-800/60"
+        >
           {skills.map((cat, idx) => {
             const catName = lang === 'sv' ? cat.svCategory : lang === 'zh' ? cat.category : cat.enCategory;
+            const isSelected = activeCategory === idx;
             return (
               <button
                 type="button"
+                role="tab"
+                id={`skill-tab-${idx}`}
+                aria-selected={isSelected}
+                aria-controls="skills-tabpanel"
                 key={idx}
                 onClick={() => setActiveCategory(idx)}
                 className={`flex items-center gap-2 px-4 py-2 text-xs sm:text-sm font-medium rounded-lg transition-all whitespace-nowrap ${
-                  activeCategory === idx
+                  isSelected
                     ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-xs'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                    : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 {getCategoryIcon(idx)}
@@ -98,7 +114,12 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({ skills, lang }) =>
         </div>
 
         {/* Skills Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+        <div
+          id="skills-tabpanel"
+          role="tabpanel"
+          aria-labelledby={`skill-tab-${activeCategory}`}
+          className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6"
+        >
           {skills[activeCategory].items.map((item, i) => {
             const expLabel = lang === 'sv' && item.svExperience ? item.svExperience : lang === 'zh' ? item.experience : item.enExperience || item.experience;
             return (
@@ -113,25 +134,32 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({ skills, lang }) =>
                       {item.name}
                     </h3>
                     {item.featured && (
-                      <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400">
+                      <span className="text-[11px] font-mono text-slate-600 dark:text-slate-300">
                         {t.coreTag}
                       </span>
                     )}
                   </div>
-                  <div className="text-xs font-mono text-slate-500 dark:text-slate-400 tabular-nums">
+                  <div className="text-xs font-mono text-slate-600 dark:text-slate-300 tabular-nums">
                     {expLabel}
                   </div>
                 </div>
 
                 {/* Progress Bar */}
-                <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                <div
+                  role="progressbar"
+                  aria-valuenow={item.level}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-label={`${item.name}: ${item.level}%`}
+                  className="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden"
+                >
                   <div
                     className="bg-slate-800 dark:bg-slate-200 h-full rounded-full transition-all duration-500"
                     style={{ width: `${item.level}%` }}
                   />
                 </div>
 
-                <div className="flex items-center justify-between text-[11px] text-slate-400 dark:text-slate-500 mt-2">
+                <div className="flex items-center justify-between text-[11px] text-slate-600 dark:text-slate-300 mt-2">
                   <span>{t.levelLabel}</span>
                   <span className="font-mono tabular-nums">{item.level}%</span>
                 </div>
@@ -143,7 +171,7 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({ skills, lang }) =>
         {/* Engineering Philosophy Highlights */}
         <div className="mt-8 p-5 rounded-xl bg-slate-50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800/60 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
-            <CheckCircle2 className="w-4 h-4 text-slate-700 dark:text-slate-300 shrink-0" />
+            <CheckCircle2 className="w-4 h-4 text-slate-700 dark:text-slate-300 shrink-0" aria-hidden="true" />
             <div className="text-xs sm:text-sm text-slate-700 dark:text-slate-300">
               <span className="font-semibold text-slate-900 dark:text-white">
                 {t.philosophyLabel}

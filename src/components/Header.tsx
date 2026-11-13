@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CandidateProfile, Language } from '../types/resume';
 import { Moon, Sun, Printer, MessageSquarePlus, Menu, X, FileDown, Globe, Bot } from 'lucide-react';
 
@@ -25,6 +25,17 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setLangDropdownOpen(false);
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, []);
 
   const navLabels = {
     en: {
@@ -70,21 +81,21 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-slate-200/80 dark:bg-slate-950/95 dark:border-slate-800/80 transition-colors">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4 sm:gap-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-2 sm:gap-4">
         {/* Zone 1: Brand wordmark */}
         <a
           href="#top"
-          className="text-base sm:text-lg font-bold tracking-tight text-slate-900 dark:text-white whitespace-nowrap shrink-0 hover:opacity-85 transition-opacity"
+          className="text-sm sm:text-base lg:text-lg font-bold tracking-tight text-slate-900 dark:text-white whitespace-nowrap shrink-0 hover:opacity-85 transition-opacity"
         >
-          {profile.name} <span className="font-normal text-slate-500">· Stockholm</span>
+          {profile.name} <span className="hidden xl:inline font-normal text-slate-600 dark:text-slate-300">· Stockholm</span>
         </a>
 
         {/* Zone 2: Navigation / Menu (<nav>) */}
         <nav
           aria-label="Main Navigation"
-          className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600 dark:text-slate-300"
+          className="hidden md:flex items-center gap-3 lg:gap-6 text-xs lg:text-sm font-medium text-slate-600 dark:text-slate-300"
         >
-          <ul className="flex items-center gap-6 list-none p-0 m-0">
+          <ul className="flex items-center gap-3 lg:gap-5 list-none p-0 m-0">
             <li>
               <a
                 href="#about"
@@ -130,49 +141,54 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Zone 3: 3-Language Button & Controls */}
         <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
-          {/* Trilingual Switcher (English, Swedish, Chinese) - Highlighted in Green */}
+          {/* Trilingual Switcher (English, Swedish, Chinese) - High-Contrast Green */}
           <div className="relative">
             <button
               type="button"
               onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 dark:bg-emerald-600 dark:hover:bg-emerald-500 rounded-lg transition-all border border-emerald-500 shadow-sm ring-2 ring-emerald-400/30 active:scale-95 cursor-pointer"
+              aria-expanded={langDropdownOpen}
+              aria-haspopup="menu"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-emerald-700 hover:bg-emerald-800 dark:bg-emerald-700 dark:hover:bg-emerald-600 rounded-lg transition-all border border-emerald-800 dark:border-emerald-500 shadow-sm ring-2 ring-emerald-500/30 active:scale-95 cursor-pointer"
               title="Change Language / Byt språk / 切换语言 (EN / SV / 中文)"
-              aria-label="Change language"
+              aria-label={`Change language (current: ${lang.toUpperCase()})`}
             >
-              <Globe className="w-3.5 h-3.5 text-emerald-100" />
+              <Globe className="w-3.5 h-3.5 text-white" aria-hidden="true" />
               <span className="uppercase font-mono tracking-wider font-bold">
                 {lang === 'en' ? '🇬🇧 EN' : lang === 'sv' ? '🇸🇪 SV' : '🇨🇳 中文'}
               </span>
-              <span className="text-[10px] text-emerald-100">▼</span>
+              <span className="text-[10px] text-white" aria-hidden="true">▼</span>
             </button>
 
             {langDropdownOpen && (
               <div
-                className="absolute right-0 mt-1.5 w-40 rounded-xl bg-white dark:bg-slate-900 border-2 border-emerald-500/50 dark:border-emerald-500/50 shadow-xl py-1 z-50 animate-in fade-in duration-100 ring-1 ring-emerald-500/20"
+                className="absolute right-0 mt-1.5 w-40 rounded-xl bg-white dark:bg-slate-900 border-2 border-emerald-600/60 dark:border-emerald-500/60 shadow-xl py-1 z-50 animate-in fade-in duration-100 ring-1 ring-emerald-600/20"
                 role="menu"
+                aria-label="Language selection"
               >
-                <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 border-b border-emerald-100 dark:border-slate-800">
+                <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300 border-b border-emerald-100 dark:border-slate-800">
                   Select Language
                 </div>
                 {languages.map((item) => (
                   <button
                     key={item.code}
                     type="button"
+                    role="menuitemradio"
+                    aria-checked={lang === item.code}
                     onClick={() => {
                       onChangeLang(item.code);
                       setLangDropdownOpen(false);
                     }}
                     className={`w-full flex items-center justify-between px-3 py-2 text-xs font-medium text-left transition-colors cursor-pointer ${
                       lang === item.code
-                        ? 'bg-emerald-50 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300 font-bold'
-                        : 'text-slate-600 dark:text-slate-300 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/30 hover:text-emerald-700 dark:hover:text-emerald-300'
+                        ? 'bg-emerald-50 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-200 font-bold'
+                        : 'text-slate-700 dark:text-slate-200 hover:bg-emerald-50/50 dark:hover:bg-emerald-950/30 hover:text-emerald-800 dark:hover:text-emerald-200'
                     }`}
                   >
                     <span className="flex items-center gap-2">
-                      <span className="text-base">{item.flag}</span>
+                      <span className="text-base" aria-hidden="true">{item.flag}</span>
                       <span>{item.label}</span>
                     </span>
-                    {lang === item.code && <span className="text-emerald-600 font-bold">✓</span>}
+                    {lang === item.code && <span className="text-emerald-700 dark:text-emerald-300 font-bold" aria-hidden="true">✓</span>}
                   </button>
                 ))}
               </div>
@@ -184,10 +200,11 @@ export const Header: React.FC<HeaderProps> = ({
             type="button"
             onClick={onToggleDark}
             title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-            className="p-2 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-            aria-label="Toggle theme"
+            className="p-2 text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            aria-label={isDark ? 'Switch to light color mode' : 'Switch to dark color mode'}
+            aria-pressed={isDark}
           >
-            {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            {isDark ? <Sun className="w-4 h-4" aria-hidden="true" /> : <Moon className="w-4 h-4" aria-hidden="true" />}
           </button>
 
           {/* Quick PDF download button */}
@@ -196,9 +213,9 @@ export const Header: React.FC<HeaderProps> = ({
             target="_blank"
             rel="noopener noreferrer"
             title="Download PDF CV"
-            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-800 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200 border border-slate-300 dark:border-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           >
-            <FileDown className="w-3.5 h-3.5" />
+            <FileDown className="w-3.5 h-3.5" aria-hidden="true" />
             <span>{navLabels.pdfCv}</span>
           </a>
 
@@ -206,20 +223,21 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={onOpenChat}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:text-emerald-300 dark:hover:bg-emerald-900/60 border border-emerald-300 dark:border-emerald-700 rounded-lg transition-colors shadow-2xs"
+            className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/80 dark:text-emerald-200 dark:hover:bg-emerald-900/70 border border-emerald-400 dark:border-emerald-700 rounded-lg transition-colors shadow-2xs shrink-0"
             title="Chat with AI Recruitment Assistant"
+            aria-label={navLabels.askAi}
           >
-            <Bot className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-            <span className="font-medium">{navLabels.askAi}</span>
+            <Bot className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-300" aria-hidden="true" />
+            <span className="hidden sm:inline font-medium">{navLabels.askAi}</span>
           </button>
 
           {/* Primary Action Button: Print Resume */}
           <button
             type="button"
             onClick={onOpenPrint}
-            className="hidden lg:flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-slate-900 rounded-lg hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 transition-colors shadow-xs"
+            className="hidden xl:flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-slate-900 rounded-lg hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 transition-colors shadow-xs"
           >
-            <Printer className="w-3.5 h-3.5" />
+            <Printer className="w-3.5 h-3.5" aria-hidden="true" />
             <span>{navLabels.print}</span>
           </button>
 
@@ -227,9 +245,9 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={onScrollToMessage}
-            className="md:hidden flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-white bg-slate-900 rounded-lg hover:bg-slate-800 dark:bg-white dark:text-slate-900"
+            className="hidden sm:flex md:hidden items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-white bg-slate-900 rounded-lg hover:bg-slate-800 dark:bg-white dark:text-slate-900"
           >
-            <MessageSquarePlus className="w-3.5 h-3.5" />
+            <MessageSquarePlus className="w-3.5 h-3.5" aria-hidden="true" />
             <span>{navLabels.quickContact}</span>
           </button>
 
@@ -237,21 +255,26 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-slate-600 dark:text-slate-300 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800"
-            aria-label="Toggle mobile menu"
+            className="md:hidden p-2 text-slate-700 dark:text-slate-200 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800"
+            aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-nav-drawer"
           >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {mobileMenuOpen ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
           </button>
         </div>
       </div>
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-4 space-y-3">
+        <div
+          id="mobile-nav-drawer"
+          className="md:hidden border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 py-4 space-y-3"
+        >
           {/* Mobile Language Switcher - Highlighted in Green */}
           <div className="flex items-center justify-between pb-3 border-b border-emerald-100 dark:border-slate-800">
-            <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
-              <Globe className="w-3.5 h-3.5 text-emerald-600" />
+            <span className="text-xs font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
+              <Globe className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-300" aria-hidden="true" />
               <span>Language / Språk:</span>
             </span>
             <div className="flex items-center gap-1.5">
@@ -259,14 +282,15 @@ export const Header: React.FC<HeaderProps> = ({
                 <button
                   key={item.code}
                   type="button"
+                  aria-pressed={lang === item.code}
                   onClick={() => onChangeLang(item.code)}
                   className={`px-3 py-1.5 text-xs rounded-lg font-bold transition-all ${
                     lang === item.code
-                      ? 'bg-emerald-600 text-white shadow-sm ring-2 ring-emerald-500/30'
-                      : 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/80 hover:bg-emerald-100'
+                      ? 'bg-emerald-700 text-white shadow-sm ring-2 ring-emerald-500/30'
+                      : 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-700 hover:bg-emerald-100'
                   }`}
                 >
-                  {item.flag} {item.code.toUpperCase()}
+                  <span aria-hidden="true">{item.flag}</span> {item.code.toUpperCase()}
                 </button>
               ))}
             </div>

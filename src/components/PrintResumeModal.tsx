@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CandidateProfile, WorkExperience, EducationItem, SkillCategory, Language } from '../types/resume';
 import { X, Printer, Download } from 'lucide-react';
 
@@ -19,6 +19,14 @@ export const PrintResumeModal: React.FC<PrintResumeModalProps> = ({
   lang,
   onClose,
 }) => {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   const t = {
     en: {
       barTitle: 'Standard A4 Resume Print Preview (Save as PDF)',
@@ -61,12 +69,17 @@ export const PrintResumeModal: React.FC<PrintResumeModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/75 backdrop-blur-sm overflow-y-auto">
       {/* Modal Container */}
-      <div className="relative w-full max-w-4xl max-h-[92vh] overflow-y-auto bg-white text-slate-900 rounded-2xl shadow-2xl flex flex-col">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="print-modal-title"
+        className="relative w-full max-w-4xl max-h-[92vh] overflow-y-auto bg-white text-slate-900 rounded-2xl shadow-2xl flex flex-col"
+      >
         {/* Top Control Bar (Hidden when printing via no-print class) */}
         <div className="no-print sticky top-0 z-20 flex items-center justify-between px-6 py-3.5 bg-slate-900 text-white rounded-t-2xl">
           <div className="flex items-center gap-2 text-xs sm:text-sm font-semibold">
-            <Printer className="w-4 h-4" />
-            <span>{t.barTitle}</span>
+            <Printer className="w-4 h-4" aria-hidden="true" />
+            <span id="print-modal-title">{t.barTitle}</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -75,16 +88,16 @@ export const PrintResumeModal: React.FC<PrintResumeModalProps> = ({
               onClick={handlePrint}
               className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-slate-900 bg-white rounded-lg hover:bg-slate-100 transition-colors shadow-xs"
             >
-              <Download className="w-3.5 h-3.5" />
+              <Download className="w-3.5 h-3.5" aria-hidden="true" />
               <span>{t.printBtn}</span>
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-white rounded-lg transition-colors"
-              aria-label="Close"
+              className="p-1.5 text-slate-200 hover:text-white rounded-lg transition-colors"
+              aria-label="Close modal"
             >
-              <X className="w-4 h-4" />
+              <X className="w-4 h-4" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -94,49 +107,49 @@ export const PrintResumeModal: React.FC<PrintResumeModalProps> = ({
           {/* Header Block */}
           <div className="border-b-2 border-slate-900 pb-5 mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
             <div>
-              <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
                 {profile.name}
-              </h1>
-              <p className="text-base font-semibold text-slate-700 mt-1">
+              </h2>
+              <p className="text-base font-semibold text-slate-800 mt-1">
                 {title}
               </p>
-              <p className="text-xs text-slate-600 mt-1 max-w-xl">
+              <p className="text-xs text-slate-700 mt-1 max-w-xl">
                 {tagline}
               </p>
             </div>
 
-            <div className="text-xs text-slate-600 font-mono space-y-1 text-left sm:text-right shrink-0">
+            <div className="text-xs text-slate-700 font-mono space-y-1 text-left sm:text-right shrink-0">
               <div>{profile.email}</div>
               <div>{profile.phone}</div>
               <div>{location}</div>
-              <div className="text-[11px] text-slate-500">{profile.github}</div>
-              <div className="text-[11px] text-slate-500">{profile.linkedin}</div>
+              <div className="text-[11px] text-slate-600">{profile.github}</div>
+              <div className="text-[11px] text-slate-600">{profile.linkedin}</div>
             </div>
           </div>
 
           {/* Education & Status Summary */}
           <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 gap-4 p-3.5 bg-slate-50 border border-slate-200 rounded-lg">
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
                 {t.availHeader}
               </div>
               <div className="font-semibold text-slate-900">
                 {jobStatus}
               </div>
-              <div className="text-slate-600 text-xs mt-0.5">
+              <div className="text-slate-700 text-xs mt-0.5">
                 Roles: {(lang === 'sv' ? profile.svTargetRoles : lang === 'zh' ? profile.targetRoles : profile.enTargetRoles).join(' / ')}
               </div>
             </div>
 
             <div>
-              <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-1">
+              <div className="text-[11px] font-bold uppercase tracking-wider text-slate-600 mb-1">
                 {t.eduHeader}
               </div>
               {education.map((edu, i) => {
                 const degree = lang === 'sv' && edu.svDegree ? edu.svDegree : lang === 'zh' ? edu.degree : edu.enDegree;
                 const inst = lang === 'sv' && edu.svInstitution ? edu.svInstitution : lang === 'zh' ? edu.institution : edu.enInstitution;
                 return (
-                  <div key={i} className="text-xs text-slate-700">
+                  <div key={i} className="text-xs text-slate-800">
                     <strong>{inst}</strong> · {degree} ({edu.period})
                   </div>
                 );
@@ -146,9 +159,9 @@ export const PrintResumeModal: React.FC<PrintResumeModalProps> = ({
 
           {/* Work Experiences */}
           <div className="mb-6">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900 border-b border-slate-300 pb-1.5 mb-4">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 border-b border-slate-300 pb-1.5 mb-4">
               {t.expHeader}
-            </h2>
+            </h3>
             <div className="space-y-5">
               {experiences.map((exp) => {
                 const role = lang === 'sv' ? exp.svRole : lang === 'zh' ? exp.role : exp.enRole;
@@ -161,21 +174,21 @@ export const PrintResumeModal: React.FC<PrintResumeModalProps> = ({
                   <div key={exp.id} className="space-y-1.5">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs sm:text-sm">
                       <span className="font-bold text-slate-900">
-                        {role} · <span className="font-semibold text-slate-700">{company}</span>
+                        {role} · <span className="font-semibold text-slate-800">{company}</span>
                       </span>
-                      <span className="font-mono text-slate-500 text-xs tabular-nums">
+                      <span className="font-mono text-slate-600 text-xs tabular-nums">
                         {exp.period} · {loc}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-600 italic">
+                    <p className="text-xs text-slate-700 italic">
                       {summary}
                     </p>
-                    <ul className="list-disc list-outside pl-4 space-y-1 text-xs text-slate-700">
+                    <ul className="list-disc list-outside pl-4 space-y-1 text-xs text-slate-800">
                       {achievements.map((ach, i) => (
                         <li key={i}>{ach}</li>
                       ))}
                     </ul>
-                    <div className="text-[11px] font-mono text-slate-500 pt-0.5">
+                    <div className="text-[11px] font-mono text-slate-600 pt-0.5">
                       <strong>{t.stackPrefix}</strong> {exp.techStack.join(', ')}
                     </div>
                   </div>
@@ -186,18 +199,18 @@ export const PrintResumeModal: React.FC<PrintResumeModalProps> = ({
 
           {/* Core Technical Skills */}
           <div>
-            <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900 border-b border-slate-300 pb-1.5 mb-3">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900 border-b border-slate-300 pb-1.5 mb-3">
               {t.skillsHeader}
-            </h2>
+            </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
               {skills.map((cat, i) => {
                 const catName = lang === 'sv' ? cat.svCategory : lang === 'zh' ? cat.category : cat.enCategory;
                 return (
                   <div key={i}>
-                    <div className="font-bold text-slate-800 mb-1">
+                    <div className="font-bold text-slate-900 mb-1">
                       {catName}:
                     </div>
-                    <div className="text-slate-600 font-mono text-[11px] leading-relaxed">
+                    <div className="text-slate-700 font-mono text-[11px] leading-relaxed">
                       {cat.items.map((it) => it.name).join(' · ')}
                     </div>
                   </div>
